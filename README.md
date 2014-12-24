@@ -1,6 +1,6 @@
 Young
 =====
-Named in honour of the bust of George Paxton Young that lives at the office of the Department of Philosophy at the University of Toronto.
+Named in honour of the bust of George Paxton Young that lives in the office of the Department of Philosophy at the University of Toronto.
 
 Goals:
 1. Generate Internal Omnibus
