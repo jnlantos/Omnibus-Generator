@@ -37,11 +37,7 @@ def get_events (soup, date):
 	
 
 if __name__ == "__main__":
-	#url = request_page(URL)
-	#SOUP = make_soup(url)
-	#month = get_month(SOUP)
-	#print(date_range(TODAY, 2))
-	#print (TODAY)
+
 	URL = "http://www.philosophy.utoronto.ca/events/"
 	TODAY = datetime.datetime.today()
 	NUM_MONTH = {"Jan":1, "Feb":2, "Mar":3, "Apr":4, "May":5, "Jun":6, "Jul":7, "Aug":8, "Sep":9, "Oct":10, "Nov":11, "Dec":12}
@@ -59,31 +55,10 @@ if __name__ == "__main__":
 				HREF_LIST.append(e.a["href"])
 		
 
-
+	
 	print(HREF_LIST)
-	# for event in events:
-	# 	# print(date.year == int(get_month(soup)[1]))
-	# 	# print(date.month == NUM_MONTH[get_month(soup)[0]])
-	# 	# print(date.day == int(event.a.get_text()))
-	# 	#print (date)
-	# 	#print (event.a.get_text())
-
-
 	
 
-			
-
-
-
-
-#	daterange = input("Please enter a date range.")
-
-
-
-
-
-
-	
 # temprorarily here for learning purposes
 # print(soup.prettify())
 # print(soup.title)
@@ -97,3 +72,21 @@ if __name__ == "__main__":
 # 	print(i)
 # print(soup.find_all('a'))
 # print(soup.original_encoding)
+
+	
+	#url = request_page(URL)
+	#SOUP = make_soup(url)
+	#month = get_month(SOUP)
+	#print(date_range(TODAY, 2))
+	#print (TODAY)
+			
+
+# for event in events:
+	# 	# print(date.year == int(get_month(soup)[1]))
+	# 	# print(date.month == NUM_MONTH[get_month(soup)[0]])
+	# 	# print(date.day == int(event.a.get_text()))
+	# 	#print (date)
+	# 	#print (event.a.get_text())
+
+
+#	daterange = input("Please enter a date range.")
