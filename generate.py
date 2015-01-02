@@ -69,7 +69,7 @@ def format(month1, date1, year1, month2, date2, year2, events_string, me, recipi
                                                             Department of
                                                             Philosophy <br>
                                                             <big><small>Talks
-                                                            and Events </small></big></b></font><font face="Calibri" size="6"><b>(""" + month1 + """</b></font><b><font size="6"><font size="6">""" + date1 + ", " + year1 + " " + month2 + " " + date2 + ", " + year2 + """</font></font>)</font></b><font face="Calibri"><br>
+                                                            and Events </small></big></b></font><font face="Calibri" size="6"><b>(""" + month1 + """</b></font><b><font size="6"><font size="6">""" + date1 + ", " + year1 + " " + month2 + " " + date2 + ", " + year2 + """)</font></font></font></b><font face="Calibri"><br>
                                                             <big>Please
                                                             mark your
                                                             calendars with
@@ -133,7 +133,7 @@ def format(month1, date1, year1, month2, date2, year2, events_string, me, recipi
     </body>
   </html>"""
 
-  html = html1 + events_string + html2
+  html = html1 + str(events_string) + html2
 
   # Record the MIME types of both parts - text/plain and text/html.
   part1 = MIMEText(text, 'plain')

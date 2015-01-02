@@ -48,7 +48,7 @@ def get_event_info (href_list):
 		# --------------------------------------------------
 		title = soup.h1.get_text()
 		#print(title)
-		date = (soup.find(class_="site-posts").p.br).decode("utf-8")
+		date = (soup.find(class_="site-posts").p.br.next)
 		print(date)
 		time = soup.find(class_="site-posts").p.i.get_text()
 		#print(time)
@@ -74,6 +74,9 @@ def get_event_info (href_list):
 	      <td valign="top" bgcolor=""" + color + """"><a moz-do-not-send="true" href=""" + href + ">" + title  + "</a>(" + room + " - " + date + " - " + year + ";" + time + ")<br><br>" + content +"""<br>
 	      </td>
 	      </tr>"""
+
+	# encode the string in utf-8 so that..something something unicode something
+	events_string = events_string.encode('utf-8')
 
 	return events_string, month1, date1, year1, month2, date2, year2
 
@@ -154,3 +157,5 @@ if __name__ == "__main__":
 	# print (event.a.get_text())
 
 # daterange = input("Please enter a date range.")
+
+# test when internet is down--get weird exceptions?
