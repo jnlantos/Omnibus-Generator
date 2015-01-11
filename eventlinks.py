@@ -34,6 +34,7 @@ def get_month (soup):
 def get_events (soup, date):
 	"""Return the page's events on a particular date"""
 	events = soup.find_all(class_=re.compile("eventful|eventful-today"))
+	#print(events)
 	return events
 
 def get_event_info (href_list):
@@ -41,45 +42,75 @@ def get_event_info (href_list):
 	events_string = ""
 	color = "#fffcc"
 
-	for href in href_list:
-		soup = make_soup(request_page(href))
+	for href in range(len(href_list)):
+		soup = make_soup(request_page(href_list[href]))
 		
-		# DO LATER. FOR NOW PLACEHOLDERS.
-		# --------------------------------------------------
-		title = soup.h1.get_text()
-		#print(title)
-		date = (soup.find(class_="site-posts").p.br.next)
-		print(date)
-		time = soup.find(class_="site-posts").p.i.get_text()
-		#print(time)
+		title = geteventinfo_title(soup)
+		date = geteventinfo_date(soup)
+		time = geteventinfo_time(soup)
 		content = "Talk title"
-		room = "Room123"
-		year = "2015"
+		room = geteventinfo_room(soup)
+		color = geteventinfo_color(color)
 
-		month1 = "month1"
-		date1 = "date1"
-		year1 = "year1"
-		month2 = "month2"
-		date2 = "date2"
-		year2 = "year2"
-		# --------------------------------------------------
+		if href == 0:
+			month1 = str(date.strftime("%B"))
+			date1 = str(date.strftime("%d"))
+			year1 = str(date.strftime("%Y"))
 
-		# Alternate the background color of each event
-		if color == "#ffffcc":
-			color = "#ffcc33"
-		else:
-			color = "#ffffcc"
+		if href == len(href_list) - 1:
+			month2 = str(date.strftime("%B"))
+			date2 = str(date.strftime("%d"))
+			year2 = str(date.strftime("%Y"))
 
 		events_string += """<tr>
-	      <td valign="top" bgcolor=""" + color + """"><a moz-do-not-send="true" href=""" + href + ">" + title  + "</a>(" + room + " - " + date + " - " + year + ";" + time + ")<br><br>" + content +"""<br>
+	      <td valign="top" bgcolor=""" + color + """"><a moz-do-not-send="true" href=""" + href_list[href] + ">" + title + "</a> (" + room + " - " + str(date.strftime("%A, %B %d - %Y"))  + "; " + time + ")\n<br><br>" + content +"""<br>
 	      </td>
 	      </tr>"""
 
-	# encode the string in utf-8 so that..something something unicode something
-	events_string = events_string.encode('utf-8')
+	#"If you want to turn Unicode characters back into HTML entities on output, rather than turning them into UTF-8 characters, you need to use an output formatter."
+	
+	#events_string = str(events_string.encode('utf-8'))
+
+	# 1. Decode early 2. Unicode everywhere 3. Encode late.
 
 	return events_string, month1, date1, year1, month2, date2, year2
 
+def geteventinfo_color(color):
+	# Alternate the background color of each event
+	if color == "#ffffcc":
+		color = "#ffcc33"
+	else:
+		color = "#ffffcc"
+	return color
+
+def geteventinfo_date(soup):
+	date = (soup.find(class_="site-posts").p.br.next)
+	date = date.split()[2].split("/")
+	date_day = int(date[0])
+	date_month = int(date[1])
+	date_year = int(date[2])
+	date = datetime.datetime(date_year, date_month, date_day)
+	return date
+
+def geteventinfo_time(soup):
+	time = soup.find(class_="site-posts").p.i.get_text()
+	#print(time)
+	return time
+
+def geteventinfo_room(soup):
+	try:
+		room = soup.find(class_="site-posts").p.next_sibling.next_sibling.a.get_text()
+	except (Exception):
+		room = "TBA"
+		print("Could not find room. Make sure to replace it.")
+		pass
+	#print(room)
+	return room
+
+def geteventinfo_title(soup):
+	title = soup.h1.get_text()
+	#print(title)
+	return title
 	
 
 if __name__ == "__main__":
@@ -99,7 +130,7 @@ if __name__ == "__main__":
 	date2=""
 	year2=""
 	me = "myemail@gmail.com"
-	recipient = "somebodyelse@hotmail.com"
+	recipient = "somebodyelse.utoronto.ca"
 	
 	# Will ask for start date and number of weeks as user input...DO LATER.
 
@@ -110,19 +141,20 @@ if __name__ == "__main__":
 			SOUP = make_soup(request_page(URL + next))
 
 		for e in get_events(SOUP, date):
+			#print(e)
 			if ((date.year == int(get_month(SOUP)[1])) and (date.month == NUM_MONTH[get_month(SOUP)[0]]) and (date.day == int(e.a.get_text()))):
-				HREF_LIST.append(e.a["href"])
+				#print(e.ul.li)
+				#if e.ul.li.next_sibling.next_sibling:
+					#print(e.ul.li.next_sibling)
+				HREF_LIST.append(e.ul.li.a["href"])
+				# If there are two or more events on one day
+				if e.ul.li.next_sibling.next_sibling:
+					HREF_LIST.append(e.ul.li.next_sibling.a["href"])
 		
 	#print(HREF_LIST)
+	
 
 	events_string, month1, date1, year1, month2, date2, year2 = get_event_info(HREF_LIST)
-	print(events_string)
-	print(month1)
-	print(month2)
-	print(date1)
-	print(date2)
-	print(year1)
-	print(year2)
 
 	generate.format(month1, date1, year1, month2, date2, year2, events_string, me, recipient)
 	

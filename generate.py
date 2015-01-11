@@ -6,16 +6,16 @@ def format(month1, date1, year1, month2, date2, year2, events_string, me, recipi
 
   # Create message container - the correct MIME type is multipart/alternative.
   msg = MIMEMultipart('alternative')
-  msg['Subject'] = "Department of Philosophy Talks & Events" + "(" + month1 + " " + date1 + " - " + month2 + " " + date2 + ", " + year2 + ")"
+  msg['Subject'] = "Department of Philosophy Talks & Events" + " (" + month1 + " " + date1 + " - " + month2 + " " + date2 + ", " + year2 + ")"
   msg['From'] = me
   msg['To'] = recipient
 
 
   # Create the body of the message (a plain-text and an HTML version).
-  text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttp://www.python.org"
+  text = "Please mark your calendars with this listing of talks and events in the Department in the next two weeks.\nAlso, visit http://www.philosophy.utoronto.ca/events/ for a complete listing of upcoming talks and events."
   html1 = """\
   <html><head>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
     <body text="#000000" bgcolor="#FFFFFF">
       <div class="moz-text-html" lang="x-western">
@@ -69,14 +69,14 @@ def format(month1, date1, year1, month2, date2, year2, events_string, me, recipi
                                                             Department of
                                                             Philosophy <br>
                                                             <big><small>Talks
-                                                            and Events </small></big></b></font><font face="Calibri" size="6"><b>(""" + month1 + """</b></font><b><font size="6"><font size="6">""" + date1 + ", " + year1 + " " + month2 + " " + date2 + ", " + year2 + """)</font></font></font></b><font face="Calibri"><br>
+                                                            and Events </small></big></b></font><font face="Calibri" size="6"><b>(""" + month1 + """</b><b> """ + date1 + ", " + year1 + " - " + month2 + " " + date2 + ", " + year2 + """)</font></font></b><font face="Calibri"><br>
                                                             <big>Please
                                                             mark your
                                                             calendars with
                                                             this listing
                                                             of talks and
                                                             events in the
-                                                            Department.
+                                                            Department in the next two weeks.
                                                             Also, </big></font><big><font face="Calibri">visit
                                                             </font></big><big><font face="Calibri"><a moz-do-not-send="true" href="http://www.philosophy.utoronto.ca/events/" target="_blank">http://www.philosophy.utoronto.ca/events/</a> </font></big><big><font face="Calibri">for
                                                             a complete
@@ -133,7 +133,8 @@ def format(month1, date1, year1, month2, date2, year2, events_string, me, recipi
     </body>
   </html>"""
 
-  html = html1 + str(events_string) + html2
+  html = html1 + events_string + html2
+
 
   # Record the MIME types of both parts - text/plain and text/html.
   part1 = MIMEText(text, 'plain')
